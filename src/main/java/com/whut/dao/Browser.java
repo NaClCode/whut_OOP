@@ -1,27 +1,23 @@
-package com.whut;
+package com.whut.dao;
 
-//实验一：实现Operator类
-public class Operator extends User{
+import com.whut.DataProcessing;
 
-	Operator(String name, String password, String role) {
-		super(name, password, role);
-	}
+// 实验一：在此处实现Browser类
+public class Browser extends User{
+	public Browser(String name, String password, String role) {
+        super(name, password, role);
+    }
 
-	// 实验三中实现此函数，完成文件上传功能
-	public void uploadFile(){
-		System.out.println("上传文件");
-	}
-
-	@Override
-	public void showMenu() {
-		String tip_system = "系统操作员菜单";
+    
+    @Override
+    public void showMenu() {
+        String tip_system = "系统浏览员菜单";
         String tip_menu = "请选择菜单: ";
         String infos = "****欢迎进入"+ tip_system + "****\n\t" + 
                         "1. 下载文件\n\t" + 
                         "2. 文件列表\n\t" + 
                         "3. 修改密码\n\t" + 
-						"4. 上传文件\n\t" +
-                        "5. 退出\n" + 
+                        "4. 退出\n" + 
                         "****************************";
 
         System.out.println(infos);
@@ -30,7 +26,7 @@ public class Operator extends User{
 
         while (true){
             input = DataProcessing.scanner.nextLine().trim();
-            if(!input.matches("[1-5]")){
+            if(!input.matches("[1-4]")){
                 System.err.print(tip_menu);
             }else{
                 int nextInt = Integer.parseInt(input);
@@ -52,16 +48,14 @@ public class Operator extends User{
                         changeUserPass();
                         break;
                     case 4:
-						System.out.println("上传文件");
-                        uploadFile();
-                        break;
-					case 5:
-						System.out.println("退出");
-						return;
+                        System.out.println("退出");
+                        return;
                 }
                 System.out.println(infos);
                 System.out.print(tip_menu);
             }
-		}
-	}
+
+        }
+    }
+
 }

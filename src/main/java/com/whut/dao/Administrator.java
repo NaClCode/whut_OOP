@@ -1,12 +1,15 @@
-package com.whut;
+package com.whut.dao;
 
 import java.io.IOException;
 import java.util.Enumeration;
 
+import com.whut.DataProcessing;
+import com.whut.utils.Role;
+
 //实验一：在此处实现Administrator类
 public class Administrator extends User {
 
-    Administrator(String name, String password, String role) {
+    public Administrator(String name, String password, String role) {
         super(name, password, role);
     }
 
@@ -43,11 +46,9 @@ public class Administrator extends User {
                         name = DataProcessing.scanner.nextLine();
                         System.out.print("请输入口令：");
                         password = DataProcessing.scanner.nextLine();
-                        System.out.print("请输入角色：");
-                        role = DataProcessing.scanner.nextLine();
+                        role = Role.getRole();
 
-                        if(name.equals(this.getName()) && this.getPassword().equals(password) && !this.getRole().equals(role))
-                            System.out.println("不能修改自己用户类别");
+                        if(name.equals(this.getName())) System.out.println("不能修改自己");
                         else changeUserInfo(name, password, role);
                         break;
                     case 2:
@@ -56,10 +57,7 @@ public class Administrator extends User {
                         name = DataProcessing.scanner.nextLine();
 
                         if(name.equals(this.getName())) System.out.println("不能删除自己");
-                        else{
-                            if(delUser(name)) System.out.println("删除成功");
-                            else System.out.println("用户重名");
-                        }
+                        else delUser(name);
                         break;
                     case 3:
                         System.out.println("新增用户");
@@ -67,11 +65,9 @@ public class Administrator extends User {
                         name = DataProcessing.scanner.nextLine();
                         System.out.print("请输入口令：");
                         password = DataProcessing.scanner.nextLine();
-                        System.out.print("请输入角色：");
-                        role = DataProcessing.scanner.nextLine();
+                        role = Role.getRole();
 
-                        if(addUser(name, password, role)) System.out.println("新增成功");
-                        else System.out.println("新增失败");
+                        addUser(name, password, role);
                         break;
                     case 4:
                         System.out.println("列出用户");
@@ -90,7 +86,7 @@ public class Administrator extends User {
                         showFileList();
                         break;
                     case 7:
-                        System.out.println("修改口令");
+                        System.out.println("修改密码");
                         changeUserPass();
                         break;
                     case 8:
@@ -106,28 +102,16 @@ public class Administrator extends User {
     }
 
     public boolean changeUserInfo(String name, String password, String role){
-        String[] roleEumn = {"administrator", "operator", "browser"};
-        boolean flag = true;
-        for(String str : roleEumn){
-            if(str.equals(role)){
-                flag = false;
-            }
-        }
-        if(flag){
-            System.out.println("用户角色错误");
-            return true;
-        }
-
         try {
             if(DataProcessing.updateUser(name, password, role)){
                 System.out.println("修改成功");
                 return true;
             }else{
-                System.out.println("修改失败");
+                System.out.println("用户重名");
                 return false;
             }
         } catch (IOException e) {
-            System.out.println("修改失败");
+            System.out.println("文件保存失败:" + e.getMessage());
             return false;
         }
         
@@ -135,16 +119,30 @@ public class Administrator extends User {
 
     public boolean delUser(String name){
         try {
-            return DataProcessing.deleteUser(name);
+            if(DataProcessing.deleteUser(name)){
+                System.out.println("删除成功");
+                return true;
+            }else{
+                System.out.println("用户不存在");
+                return false;
+            }
         } catch (IOException e) {
+            System.out.println("文件保存失败:" + e.getMessage());
             return false;
         }
     }
 
     public boolean addUser(String name, String password, String role){
         try {
-            return DataProcessing.insertUser(name, password, role);
+            if(DataProcessing.insertUser(name, password, role)){
+                System.out.println("添加成功");
+                return true;
+            }else{
+                System.out.println("用户重名");
+                return false;
+            }
         } catch (IOException e) {
+            System.out.println("文件保存失败:" + e.getMessage());
             return false;
         }
         

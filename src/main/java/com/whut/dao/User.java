@@ -1,6 +1,8 @@
-package com.whut;
+package com.whut.dao;
 
 import java.io.IOException;
+
+import com.whut.DataProcessing;
 
 public abstract class User{
 	private String name;
@@ -26,25 +28,19 @@ public abstract class User{
 	}
 	
 	public boolean changeUserInfo(String password){
-		// 实验一完成此功能
-		
-		// 写用户信息到存储
-		try {
+		try{
 			if (DataProcessing.updateUser(name, password, role)){
 				this.password = password;
 				return true;
 			}
 			else return false;
-		} catch (IOException e) {
+		}catch(IOException e){
 			return false;
-		}
-		
-		
+		}	
 	}
 	
-	// 文件下载
-	public boolean downloadFile(String filename){
-		// 实验三需要实现的功能
+	public boolean downloadFile(String ID){
+		
 		System.out.println("下载文件... ...");
 		return true;
 	}

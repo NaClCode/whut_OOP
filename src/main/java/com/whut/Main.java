@@ -1,8 +1,14 @@
 package com.whut;
 
+import com.whut.dao.User;
+
 public class Main{
 	public static void main(String[] args){
-		DataProcessing.Init();
+		try {
+			DataProcessing.Init();
+		} catch (Exception e) {
+			System.err.println("初始化异常:" + e.getMessage());
+		}
 		
 		// 实验一: 此处编写代码实现系统的启动
 		String infos = "****欢迎进入档案管理系统****\n\t" + 

@@ -1,32 +1,31 @@
 package com.whut;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-	
-//说明:实验二使用的 DataProcessing类
+import com.whut.dao.Administrator;
+import com.whut.dao.Browser;
+import com.whut.dao.Doc;
+import com.whut.dao.Operator;
+import com.whut.dao.User;
+import com.whut.exceptions.DataException;
+import com.whut.utils.Config;
+import com.whut.utils.Path;
 public class DataProcessing{
-	static Hashtable<String, User> users;
-	static Scanner scanner = new Scanner(System.in);
-
-	// 说明: 实验一使用此处Init()函数
+	private static Hashtable<String, User> users;
+	private static Hashtable<String, Doc> docs;
+	public static Scanner scanner = new Scanner(System.in);
+	private static Config config = new Config();
 	
-	public static void Init() { users = new Hashtable<String, User>();
-	  
-	  // 实验一: 类Administrator、Operator和Browser编制完成后，此处代码不会报错
-	  
-	  users.put("jack", new Operator("jack", "123", "operator")); 
-	  users.put("rose", new Browser("rose", "123", "browser")); 
-	  users.put("kate", new Administrator("kate", "123", "administrator"));
-	  
-	}
-	 
-/*
-	// 说明: 实验二、三、四 使用此处Init()函数
 	public static void Init() throws IOException, DataException{
 		users = new Hashtable<String, User>();
 		String name, password, role;
-
-		BufferedReader br = new BufferedReader(new FileReader("d:\\user.txt"));
+		String path = Path.getPath(config.get("user_filepath"));
+		FileReader fr = new FileReader(path);
+		BufferedReader br = new BufferedReader(fr);
 		while ((name = br.readLine()) != null){
 			password = br.readLine();
 			role = br.readLine();
@@ -49,9 +48,21 @@ public class DataProcessing{
 		}
 		br.close();
 
-		// 实验三：此处编写代码，从文件file.txt中提取已经上传的文档
+		String ID, creator, description, filename;
+		long timestamp;
+		path = Path.getPath(config.get("doc_filepath"));
+		FileReader frf = new FileReader(path);
+		BufferedReader brf = new BufferedReader(frf);
+		while((ID = brf.readLine()) != null){
+			creator = brf.readLine();
+			description = brf.readLine();
+			filename = brf.readLine();
+			timestamp = Long.parseLong(brf.readLine());
+			docs.put(ID, new Doc(ID, creator, description, filename, timestamp));
+		}
+		brf.close();
+
 	}
-*/
 	public static User searchUser(String name, String password){
 		if (users.containsKey(name)){
 			User temp = users.get(name);
@@ -66,12 +77,10 @@ public class DataProcessing{
 		return e;
 	}
 
-	// 更新用户信息
 	public static boolean updateUser(String name, String password, String role) throws IOException{
 		User user;
 
 		if (users.containsKey(name)){
-			// 类Administrator、Operator和Browser编制完成后，此处代码不再报错
 			if (role.equalsIgnoreCase("administrator"))
 				user = new Administrator(name, password, role);
 			else if (role.equalsIgnoreCase("operator"))
@@ -86,14 +95,12 @@ public class DataProcessing{
 			return false;
 	}
 
-	// 增加新用户
 	public static boolean insertUser(String name, String password, String role) throws IOException{
 		User user;
 
 		if (users.containsKey(name))
 			return false;
 		else{
-			// 类Administrator、Operator和Browser编制完成后，此处代码不再报错
 			if (role.equalsIgnoreCase("administrator"))
 				user = new Administrator(name, password, role);
 			else if (role.equalsIgnoreCase("operator"))
@@ -106,7 +113,6 @@ public class DataProcessing{
 		}
 	}
 
-	// 删除用户
 	public static boolean deleteUser(String name) throws IOException{
 		if (users.containsKey(name)){
 			users.remove(name);
@@ -117,37 +123,49 @@ public class DataProcessing{
 			return false;
 	}
 
-	// 实验三：实现此功能
-	// 将用户信息写入到文件user.txt中，实现用户信息永久保存
 	public static void updateUserFile() throws IOException{
+		String path = Path.getPath(config.get("user_filepath"));
 
+		FileWriter fw = new FileWriter(path);
+		BufferedWriter bw = new BufferedWriter(fw);
+		for (String name : users.keySet())
+			bw.write(name + "\n" + 
+					users.get(name).getPassword() + "\n" +
+					users.get(name).getRole() + "\n");
+		bw.close();
 	}
 
-	// 实验三：参照用户管理功能中的函数实现方法，完成这些函数的功能
-	// 下面是档案管理功能函数
-	// 找到档案号为ID的档案文件信息
-	public static Doc searchDoc(String ID)
-	{
+	public static Doc searchDoc(String ID){
+		if (docs.containsKey(ID)) return docs.get(ID);
 		return null;
 	}
 
-	// 提取所有的档案文件信息
-	public static Enumeration<Doc> getAllDocs()
-	{
-		return null;
+	public static Enumeration<Doc> getAllDocs(){
+		Enumeration<Doc> e = docs.elements();
+		return e;
 	}
 
-	// 增加新的档案文件信息
 	public static boolean insertDoc(String ID, String creator, long timestamp, String description, String filename)
-			throws IOException
-	{
+			throws IOException{
+
+		if (docs.containsKey(ID)) return false;
+		else docs.put(ID, new Doc(ID, creator, description, filename, timestamp));
 		updateDocFile();
 		return true;
 	}
 
-	// 将档案档案文件的信息写入到文件file.txt中
-	 public static void updateDocFile() throws IOException
-	 {
+	public static void updateDocFile() throws IOException{
 
-	 }
+		String path = Path.getPath(config.get("doc_filepath"));
+
+		FileWriter fw = new FileWriter(path);
+		BufferedWriter bw = new BufferedWriter(fw);
+		for (String ID : docs.keySet())
+			bw.write(ID + "\n" + 
+					docs.get(ID).getCreator() + "\n" +
+					docs.get(ID).getDescription() + "\n" +
+					docs.get(ID).getFilename() + "\n" + 
+					docs.get(ID).getTimestamp() + "\n");
+		bw.close();
+	}
 }

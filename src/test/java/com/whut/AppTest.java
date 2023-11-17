@@ -1,20 +1,22 @@
 package com.whut;
 
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Test;
 
-/**
- * Unit test for simple App.
- */
-public class AppTest 
-{
+import com.whut.utils.Config;
+
+
+
+public class AppTest{
     /**
      * Rigorous Test :-)
      */
     @Test
     public void shouldAnswerWithTrue()
     {
-        assertTrue( true );
+
+       Config config = new Config();
+       System.out.println(config.get("user_filepath"));
+       System.out.println("d");
+
     }
 }
