@@ -1,4 +1,4 @@
-package com.whut.dao;
+package com.whut.model;
 
 // 实验三：实现此类
 public class Doc{

@@ -5,25 +5,29 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
-import com.whut.dao.Administrator;
-import com.whut.dao.Browser;
-import com.whut.dao.Doc;
-import com.whut.dao.Operator;
-import com.whut.dao.User;
+
+import java.util.Hashtable;
+import java.util.Scanner;
+import java.util.Enumeration;
 import com.whut.exceptions.DataException;
+import com.whut.model.Administrator;
+import com.whut.model.Browser;
+import com.whut.model.Doc;
+import com.whut.model.Operator;
+import com.whut.model.User;
 import com.whut.utils.Config;
-import com.whut.utils.Path;
+import java.io.File;
+
 public class DataProcessing{
 	private static Hashtable<String, User> users;
 	private static Hashtable<String, Doc> docs;
 	public static Scanner scanner = new Scanner(System.in);
-	private static Config config = new Config();
+	public static Config config = new Config();
 	
 	public static void Init() throws IOException, DataException{
 		users = new Hashtable<String, User>();
 		String name, password, role;
-		String path = Path.getPath(config.get("user_filepath"));
+		String path = config.get("user_filepath");
 		FileReader fr = new FileReader(path);
 		BufferedReader br = new BufferedReader(fr);
 		while ((name = br.readLine()) != null){
@@ -48,9 +52,10 @@ public class DataProcessing{
 		}
 		br.close();
 
+		docs = new Hashtable<String, Doc>();
 		String ID, creator, description, filename;
 		long timestamp;
-		path = Path.getPath(config.get("doc_filepath"));
+		path = config.get("doc_filepath");
 		FileReader frf = new FileReader(path);
 		BufferedReader brf = new BufferedReader(frf);
 		while((ID = brf.readLine()) != null){
@@ -124,8 +129,7 @@ public class DataProcessing{
 	}
 
 	public static void updateUserFile() throws IOException{
-		String path = Path.getPath(config.get("user_filepath"));
-
+		String path = config.get("user_filepath");
 		FileWriter fw = new FileWriter(path);
 		BufferedWriter bw = new BufferedWriter(fw);
 		for (String name : users.keySet())
@@ -145,18 +149,26 @@ public class DataProcessing{
 		return e;
 	}
 
-	public static boolean insertDoc(String ID, String creator, long timestamp, String description, String filename)
-			throws IOException{
+	public static boolean deleteDoc(String ID) throws IOException{
+		if (!docs.containsKey(ID)) return false;
+		String path = config.get("doc_filepath");
+		File file = new File(path + "\\" + docs.get(ID).getFilename());
+		file.delete();
+		docs.remove(ID);
+		updateDocFile();
+		return true;
+	}
 
-		if (docs.containsKey(ID)) return false;
-		else docs.put(ID, new Doc(ID, creator, description, filename, timestamp));
+	public static boolean insertDoc(Doc doc) throws IOException{
+		if (docs.containsKey(doc.getID())) return false;
+		docs.put(doc.getID(), doc);
 		updateDocFile();
 		return true;
 	}
 
 	public static void updateDocFile() throws IOException{
 
-		String path = Path.getPath(config.get("doc_filepath"));
+		String path = config.get("doc_filepath");
 
 		FileWriter fw = new FileWriter(path);
 		BufferedWriter bw = new BufferedWriter(fw);

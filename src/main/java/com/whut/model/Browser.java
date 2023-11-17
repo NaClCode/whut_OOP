@@ -1,4 +1,6 @@
-package com.whut.dao;
+package com.whut.model;
+
+import java.io.IOException;
 
 import com.whut.DataProcessing;
 
@@ -33,11 +35,14 @@ public class Browser extends User{
                 switch(nextInt){
                     case 1:
                         System.out.println("下载文件");
-                        System.out.print("请输入档案名：");
+                        System.out.print("请输入档案ID:");
                         String docID = DataProcessing.scanner.nextLine();
-
-                        if(downloadFile(docID)) System.out.println("下载成功");
-                        else System.out.println("下载失败");
+                        try {
+                            if(downloadFile(docID)) System.out.println("下载成功");
+                            else System.out.println("ID无效");
+                        } catch (IOException e) {
+                            System.out.println("下载失败:" + e.getMessage());
+                        }
                         break;
                     case 2:
                         System.out.println("文件列表");

@@ -1,6 +1,6 @@
 package com.whut;
 
-import com.whut.dao.User;
+import com.whut.model.User;
 
 public class Main{
 	public static void main(String[] args){
