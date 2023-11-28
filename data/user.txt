@@ -1,9 +1,9 @@
 java
-123
+124
 Operator
-class
-123
-Administrator
 Python
 123
 Browser
+class
+123
+Administrator

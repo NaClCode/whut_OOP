@@ -1,9 +1,0 @@
-java
-123
-Operator
-class
-123
-Administrator
-Python
-123
-Browser

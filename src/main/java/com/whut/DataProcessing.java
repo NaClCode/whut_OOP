@@ -22,7 +22,7 @@ public class DataProcessing{
 	private static Hashtable<String, User> users;
 	private static Hashtable<String, Doc> docs;
 	public static Scanner scanner = new Scanner(System.in);
-	public static Config config = new Config();
+	public static Config config = Main.config;
 	
 	public static void Init() throws IOException, DataException{
 		users = new Hashtable<String, User>();

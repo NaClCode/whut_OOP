@@ -1,9 +1,16 @@
 package com.whut;
 
 import com.whut.model.User;
+import com.whut.utils.Config;
 
 public class Main{
+
+	public static Config config = new Config();
 	public static void main(String[] args){
+
+
+		config.init(args);		
+
 		try {
 			DataProcessing.Init();
 		} catch (Exception e) {
