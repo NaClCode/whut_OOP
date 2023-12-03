@@ -50,9 +50,10 @@ public abstract class User{
 	public boolean downloadFile(String ID) throws IOException{
 		Doc doc = DataProcessing.searchDoc(ID);
 		if (doc != null) {
+			System.out.println("下载中...");
 			String server_filepath = DataProcessing.config.get("server_filepath");
 			String download_filepath = DataProcessing.config.get("download_filepath");
-			String path =  server_filepath + "\\" + doc.getFilename();
+			String path =  server_filepath + "\\" + doc.getUploadFileName();
 			String downPath = download_filepath + "\\" + doc.getFilename();
 			File file = new File(path);
 			File downloadFile = new File(downPath);

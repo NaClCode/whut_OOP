@@ -5,9 +5,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
-
 import java.util.Hashtable;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import com.whut.exceptions.DataException;
 import com.whut.model.Administrator;
@@ -22,9 +22,10 @@ public class DataProcessing{
 	private static Hashtable<String, User> users;
 	private static Hashtable<String, Doc> docs;
 	public static Scanner scanner = new Scanner(System.in);
-	public static Config config = Main.config;
+	public static Config config = new Config();
 	
-	public static void Init() throws IOException, DataException{
+	public static void Init(String[] args) throws IOException, DataException{
+		config.init(args);
 		users = new Hashtable<String, User>();
 		String name, password, role;
 		String path = config.get("user_filepath");
@@ -53,7 +54,7 @@ public class DataProcessing{
 		br.close();
 
 		docs = new Hashtable<String, Doc>();
-		String ID, creator, description, filename;
+		String ID, creator, description, filename, uploadFileName;
 		long timestamp;
 		path = config.get("doc_filepath");
 		FileReader frf = new FileReader(path);
@@ -63,7 +64,8 @@ public class DataProcessing{
 			description = brf.readLine();
 			filename = brf.readLine();
 			timestamp = Long.parseLong(brf.readLine());
-			docs.put(ID, new Doc(ID, creator, description, filename, timestamp));
+			uploadFileName = brf.readLine();
+			docs.put(ID, new Doc(ID, creator, description, filename, timestamp, uploadFileName));
 		}
 		brf.close();
 
@@ -80,6 +82,15 @@ public class DataProcessing{
 	public static Enumeration<User> getAllUser(){
 		Enumeration<User> e = users.elements();
 		return e;
+	}
+
+	public static ArrayList<User> getAllUsers(){
+		Enumeration<User> e = getAllUser();
+		ArrayList<User> users = new ArrayList<User>();
+		while(e.hasMoreElements()){
+			users.add(e.nextElement());
+		}
+		return users;
 	}
 
 	public static boolean updateUser(String name, String password, String role) throws IOException{
@@ -149,6 +160,15 @@ public class DataProcessing{
 		return e;
 	}
 
+	public static ArrayList<Doc> getAllDocss(){
+		Enumeration<Doc> e = getAllDocs();
+		ArrayList<Doc> docs = new ArrayList<Doc>();
+		while(e.hasMoreElements()){
+			docs.add(e.nextElement());
+		}
+		return docs;
+	}
+
 	public static boolean deleteDoc(String ID) throws IOException{
 		if (!docs.containsKey(ID)) return false;
 		String path = config.get("doc_filepath");
@@ -173,11 +193,13 @@ public class DataProcessing{
 		FileWriter fw = new FileWriter(path);
 		BufferedWriter bw = new BufferedWriter(fw);
 		for (String ID : docs.keySet())
-			bw.write(ID + "\n" + 
+			bw.write(
+					ID + "\n" +
 					docs.get(ID).getCreator() + "\n" +
 					docs.get(ID).getDescription() + "\n" +
 					docs.get(ID).getFilename() + "\n" + 
-					docs.get(ID).getTimestamp() + "\n");
+					docs.get(ID).getTimestamp() + "\n" + 
+					docs.get(ID).getUploadFileName() + "\n");
 		bw.close();
 	}
 }

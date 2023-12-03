@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Enumeration;
 
 import com.whut.DataProcessing;
-import com.whut.utils.Role;
 
 //实验一：在此处实现Administrator类
 public class Administrator extends User {
@@ -110,7 +109,7 @@ public class Administrator extends User {
                 System.out.println("修改成功");
                 return true;
             }else{
-                System.out.println("用户重名");
+                System.out.println("修改错误");
                 return false;
             }
         } catch (IOException e) {

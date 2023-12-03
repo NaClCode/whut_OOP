@@ -7,13 +7,15 @@ public class Doc{
 	private long timestamp;
 	private String description;
 	private String filename;
+	private String uploadFileName;
 	
-	public Doc(String iD, String creator, String description, String filename, long timestamp) {
+	public Doc(String iD, String creator, String description, String filename, long timestamp, String uploadFileName) {
 		ID = iD;
 		this.creator = creator;
 		this.timestamp = timestamp;
 		this.description = description;
 		this.filename = filename;
+		this.uploadFileName = uploadFileName;
 	}
 	public String getID() {
 		return ID;
@@ -45,6 +47,11 @@ public class Doc{
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
-	
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
+	public String getUploadFileName(){
+		return this.uploadFileName;
+	}
 
 }

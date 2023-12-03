@@ -18,16 +18,16 @@ public class Operator extends User{
 		super(name, password, role);
 	}
 
-	public boolean uploadFile(String ID, String description, String uploadPath) throws IOException{
+	public boolean uploadFile(String ID, String description, String uploadPath, String fileName) throws IOException{
 
 		Date data = new Date();
 		long time = data.getTime();
-		SimpleDateFormat ft = new SimpleDateFormat ("yyyy_MM_dd");
-		String filename = ft.format(data) + "-" + getName() + "-" + ID + ".txt";
+		SimpleDateFormat ft = new SimpleDateFormat("yyyy_MM_dd");
+		String serverFileName = ft.format(data) + "-" + this.getName() + "-" + ID + "-" + fileName; //时间-用户名-ID-上传文件名
         String server_filepath = DataProcessing.config.get("server_filepath");
 		File file = new File(uploadPath);
-		File serverFile = new File(server_filepath + "\\" + filename);
-		if(serverFile.createNewFile()){
+		File serverFile = new File(server_filepath + "\\" + serverFileName);
+		if(file.exists() && serverFile.createNewFile()){
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
 			BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(serverFile));
 
@@ -36,8 +36,10 @@ public class Operator extends User{
 			bufferedOutputStream.write(bytes);
 			bufferedInputStream.close();
 			bufferedOutputStream.close();
-		};
-		return DataProcessing.insertDoc(new Doc(ID, getName(), description, filename, time));
+		}else{
+            return false;
+        }
+		return DataProcessing.insertDoc(new Doc(ID, getName(), description, fileName, time, serverFileName));
 	}
 
 	@Override
@@ -85,12 +87,19 @@ public class Operator extends User{
 						System.out.println("上传文件");
                         System.out.print("请输入档案ID:");
                         String ID = DataProcessing.scanner.nextLine();
-                        System.out.print("请输入文件名(建议绝对路径):");
+                        System.out.print("请输入文件路径(建议绝对路径):");
                         String filePath = DataProcessing.scanner.nextLine();
+                        System.out.print("请输入文件名:");
+                        String fileName = DataProcessing.scanner.nextLine();
                         System.out.print("请输入文件内容的描述:");
                         String description = DataProcessing.scanner.nextLine();
                         try {
-                            uploadFile(ID, description, filePath);
+                            System.out.println("上传中...");
+                            if(uploadFile(ID, description, filePath, fileName)){
+                                System.out.println("上传成功");
+                            }else{
+                                System.out.println("上传失败");
+                            }
                         } catch (IOException e) {
                             System.out.println("上传失败:" + e.getMessage());
                         }

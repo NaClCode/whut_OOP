@@ -1,4 +1,4 @@
-package com.whut.utils;
+package com.whut.model;
 
 import com.whut.DataProcessing;
 public class Role {
