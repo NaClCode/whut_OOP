@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -89,7 +88,7 @@ public class DelateUserPanel extends JPanel{
     //更新用户清单
     private void updateUserList(){
         userList = DataProcessing.getAllUsers();
-        userList.remove(user);
+        userList.removeIf(i -> user.getName().equals(i.getName()));
         usernameComboBox.removeAllItems();
         for(User i:userList)
             usernameComboBox.addItem(i.getName());
@@ -104,17 +103,13 @@ public class DelateUserPanel extends JPanel{
     }
 
     private void delete(String name) {
-         try {
-            if(name.equals(""))
-                JOptionPane.showMessageDialog(null, "没有可以删除的", "错误", JOptionPane.ERROR_MESSAGE);
-            else{
-                if(DataProcessing.deleteUser(name)){
-                    updateUserList(); //更新用户清单
-                    JOptionPane.showMessageDialog(null, "修改成功", "成功", JOptionPane.INFORMATION_MESSAGE);
-                }else JOptionPane.showMessageDialog(null, "修改错误", "错误", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "文件保存失败", "错误", JOptionPane.ERROR_MESSAGE);
+        if(name.equals(""))
+            JOptionPane.showMessageDialog(null, "没有可以删除的", "错误", JOptionPane.ERROR_MESSAGE);
+        else{
+            if(DataProcessing.deleteUser(name)){
+                updateUserList(); //更新用户清单
+                JOptionPane.showMessageDialog(null, "修改成功", "成功", JOptionPane.INFORMATION_MESSAGE);
+            }else JOptionPane.showMessageDialog(null, "修改错误", "错误", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

@@ -19,7 +19,7 @@ public class FilePanel{
             case UPLOAD:
                 return new UploadPanel(user);
             case DOWNLOAD:
-                return new DownloadPanel();
+                return new DownloadPanel(user);
         }
         return new JPanel();
     }

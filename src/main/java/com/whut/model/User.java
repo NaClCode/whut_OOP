@@ -1,17 +1,13 @@
 package com.whut.model;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
+import com.whut.DataProcessing;
+import javax.swing.ProgressMonitorInputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Enumeration;
-
-import com.whut.DataProcessing;
-
-
+import java.awt.Frame;
 public abstract class User{
 	private String name;
 	private String password;
@@ -22,68 +18,14 @@ public abstract class User{
 		this.password = password;
 		this.role = role;
 	}
-
-	public void changeUserPass(){
-		System.out.print("请输入新密码：");
-		String newPassword = DataProcessing.scanner.nextLine();
-
-		if(this.changeUserInfo(newPassword)){
-			System.out.println("操作成功");
-		}else{
-			System.out.println("操作失败");
-		}
-
-	}
 	
 	public boolean changeUserInfo(String password){
-		try{
-			if (DataProcessing.updateUser(name, password, role)){
-				this.password = password;
-				return true;
-			}
-			else return false;
-		}catch(IOException e){
-			return false;
-		}	
-	}
-	
-	public boolean downloadFile(String ID) throws IOException{
-		Doc doc = DataProcessing.searchDoc(ID);
-		if (doc != null) {
-			System.out.println("下载中...");
-			String server_filepath = DataProcessing.config.get("server_filepath");
-			String download_filepath = DataProcessing.config.get("download_filepath");
-			String path =  server_filepath + "\\" + doc.getUploadFileName();
-			String downPath = download_filepath + "\\" + doc.getFilename();
-			File file = new File(path);
-			File downloadFile = new File(downPath);
-
-			BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
-			BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(downloadFile));
-
-			byte[] bytes = new byte[(int) file.length()];
-			bufferedInputStream.read(bytes);
-			bufferedOutputStream.write(bytes);
-			bufferedInputStream.close();
-			bufferedOutputStream.close();
+		if (DataProcessing.updateUser(name, password, role)){
+			this.password = password;
 			return true;
 		}
-		return false;
+		else return false;
 	}
-
-	// 文件列表
-	public void showFileList(){
-		Enumeration<Doc> docEnumeration = DataProcessing.getAllDocs();
-
-        Doc doc;
-		System.out.println("ID\tCreator\tFileName\tDescription\tTime");
-        while(docEnumeration.hasMoreElements()){
-            doc = docEnumeration.nextElement();
-            System.out.println(doc.getID() + ")\t" + doc.getCreator() + "\t" + doc.getFilename() + "\t" + 
-								doc.getDescription() + "\t" + (new Date(doc.getTimestamp())));
-        }
-	}
-	public abstract void showMenu();
 
 	public void exitSystem(){
 		System.exit(0);
@@ -111,6 +53,43 @@ public abstract class User{
 
 	public void setRole(String role){
 		this.role = role;
+	}
+
+	public boolean downloadFile(String ID) throws IOException{
+		Doc doc = DataProcessing.searchDoc(ID);
+		if (doc != null) {
+			String server_filepath = DataProcessing.config.get("server_filepath");
+			String download_filepath = DataProcessing.config.get("download_filepath");
+			String path =  server_filepath + "\\" + doc.getUploadFileName();
+			String downPath = download_filepath + "\\" + doc.getFilename();
+			File file = new File(path);
+			File downloadFile = new File(downPath);
+            if(file.exists() && !downloadFile.exists()){
+                FileOutputStream fop = new FileOutputStream(downloadFile);
+                FileInputStream in = new FileInputStream(file);
+                ProgressMonitorInputStream pm = new ProgressMonitorInputStream(
+                        new Frame(), "文件下载中，请稍后...", in);
+                int c = 0;
+                pm.getProgressMonitor().setMillisToDecideToPopup(0);
+                byte[] bytes = new byte[1024];
+                while ((c = pm.read(bytes)) != -1) {
+                    fop.write(bytes, 0, c);
+                    //System.out.println(c); 延时下载
+                }
+                fop.close(); 
+                pm.close(); 
+                return true;
+            }else{
+                return false;
+            }
+			
+		}
+		return false;
+	}
+
+
+	public boolean uploadFile(String ID, String description, String filePath, String filename) throws IOException{
+		return false;
 	}
 
 }

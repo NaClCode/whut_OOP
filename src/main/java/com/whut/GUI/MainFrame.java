@@ -69,7 +69,7 @@ public class MainFrame extends JFrame {
             menuBar.add(AdminMenu());
 
         JMenu fileMenu = new JMenu("档案管理");
-        if(user.getRole().equals("Opeartor")) 
+        if(user.getRole().equals("Operator")) 
             fileMenu.add(upload());
         fileMenu.add(download());
         menuBar.add(fileMenu);

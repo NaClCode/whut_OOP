@@ -104,38 +104,7 @@ public class UploadPanel extends JPanel{
 		
     }
 
-    private boolean uploadFile(String ID, String description, String uploadPath, String fileName) throws IOException{
-
-        Date data = new Date();
-		long time = data.getTime();
-		SimpleDateFormat ft = new SimpleDateFormat("yyyy_MM_dd");
-		String serverFileName = ft.format(data) + "-" + user.getName() + "-" + ID + "-" + fileName; //时间-用户名-ID-上传文件名
-        String server_filepath = DataProcessing.config.get("server_filepath");
-        if(DataProcessing.insertDoc(new Doc(ID, user.getName(), description, fileName, time, serverFileName))){
-            File file = new File(uploadPath);
-            File serverFile = new File(server_filepath + "\\" + serverFileName);
-            if(file.exists() && serverFile.createNewFile()){
-                FileOutputStream fop = new FileOutputStream(serverFile);
-                FileInputStream in = new FileInputStream(file);
-                ProgressMonitorInputStream pm = new ProgressMonitorInputStream(
-                        new Frame(), "文件上传中，请稍后...", in);
-                int c = 0;
-                pm.getProgressMonitor().setMillisToDecideToPopup(0);
-                byte[] bytes = new byte[1024];
-                while ((c = pm.read(bytes)) != -1) {
-                    fop.write(bytes, 0, c);
-                    //System.out.println(c); 延时上传
-                }
-                fop.close(); 
-                pm.close(); 
-            }else{
-                return false;
-            }
-            return true;
-        }else{
-            return false;
-        }
-	}
+   
 
     private Runnable runnable = new Runnable() {
         @Override
@@ -149,7 +118,7 @@ public class UploadPanel extends JPanel{
             }else{
                 if(JOptionPane.showConfirmDialog(null, "是否上传" + filename, "上传", JOptionPane.YES_NO_OPTION, JOptionPane.NO_OPTION) == 0){
                     try {
-                        if(uploadFile(ID, description, filePath, filename)){
+                        if(user.uploadFile(ID, description, filePath, filename)){
                             JOptionPane.showMessageDialog(null, "上传文件成功", "成功", JOptionPane.INFORMATION_MESSAGE);
                             fileID.setText("");
                             fileDsc.setText("");

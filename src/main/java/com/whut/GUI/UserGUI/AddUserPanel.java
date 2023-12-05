@@ -3,7 +3,6 @@ package com.whut.GUI.UserGUI;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -84,14 +83,10 @@ public class AddUserPanel extends JPanel{
         if(name.equals("") || password.equals(""))
             JOptionPane.showMessageDialog(null, "您的输入的账号或密码为空", "错误", JOptionPane.ERROR_MESSAGE);
         else{
-            try {
-                if(DataProcessing.insertUser(name, password, role)){
-                    JOptionPane.showMessageDialog(null, "添加成功", "成功", JOptionPane.INFORMATION_MESSAGE);
-                }else{
-                    JOptionPane.showMessageDialog(null, "换个用户名?", "用户重名", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (IOException e) {
-                JOptionPane.showMessageDialog(null, "文件保存失败", "错误", JOptionPane.ERROR_MESSAGE);
+            if(DataProcessing.insertUser(name, password, role)){
+                JOptionPane.showMessageDialog(null, "添加成功", "成功", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(null, "换个用户名?", "用户重名", JOptionPane.ERROR_MESSAGE);
             }
         } 
         

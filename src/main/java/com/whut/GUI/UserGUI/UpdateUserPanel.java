@@ -3,7 +3,6 @@ package com.whut.GUI.UserGUI;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -101,7 +100,7 @@ public class UpdateUserPanel extends JPanel{
     //更新用户清单
     private void updateUserList(){
         userList = DataProcessing.getAllUsers();
-        userList.remove(user);
+        userList.removeIf(i -> user.getName().equals(i.getName()));
         usernameComboBox.removeAllItems();
         for(User i:userList)
             usernameComboBox.addItem(i.getName());
@@ -117,20 +116,16 @@ public class UpdateUserPanel extends JPanel{
     }
 
     private void update(String name, String password, String role) {
-         try {
-            if(name.equals("") || password.equals(""))
-                JOptionPane.showMessageDialog(null, "没有可以修改的", "错误", JOptionPane.ERROR_MESSAGE);
-            else{
-                if(DataProcessing.updateUser(name, password, role)){
+        if(name.equals("") || password.equals(""))
+            JOptionPane.showMessageDialog(null, "没有可以修改的", "错误", JOptionPane.ERROR_MESSAGE);
+        else{
+            if(DataProcessing.updateUser(name, password, role)){
                 updateUserList(); //更新用户清单
-               JOptionPane.showMessageDialog(null, "修改成功", "成功", JOptionPane.INFORMATION_MESSAGE);
-                }else
-                    JOptionPane.showMessageDialog(null, "修改错误", "错误", JOptionPane.ERROR_MESSAGE);
-            }
-           
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "文件保存失败", "错误", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "修改成功", "成功", JOptionPane.INFORMATION_MESSAGE);
+            }else
+                JOptionPane.showMessageDialog(null, "修改错误", "错误", JOptionPane.ERROR_MESSAGE);
         }
+           
     }
     
 
