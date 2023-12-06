@@ -18,11 +18,18 @@ import javax.swing.JOptionPane;
 
 public class DownloadPanel extends JPanel{
 
-    JTable table;
-    JScrollPane scrollPane;
-    ArrayList<Doc> docList;
-    User user;
-    public DownloadPanel(User user){
+    private JTable table;
+    private JScrollPane scrollPane;
+    private ArrayList<Doc> docList;
+    private User user;
+    private static DownloadPanel instance = new DownloadPanel();
+    
+    private DownloadPanel(){
+        super();
+    }
+
+    private void init(User user){
+        removeAll();
 
         this.setLayout(null);
         this.user = user;
@@ -67,9 +74,11 @@ public class DownloadPanel extends JPanel{
         public void run() {
             int id = table.getSelectedColumn();
             if(id != -1){
-                Doc doc = docList.get(id - 1);
+                Doc doc = docList.get(id);
+
                 if(JOptionPane.showConfirmDialog(null, "下载文件" + doc.getFilename(), "是否下载", JOptionPane.YES_NO_OPTION, JOptionPane.NO_OPTION) == 0){                   
                     try {
+
                         if(user.downloadFile(doc.getID())){
                             JOptionPane.showMessageDialog(null, "下载文件成功", "成功", JOptionPane.INFORMATION_MESSAGE);
                         }else
@@ -83,6 +92,11 @@ public class DownloadPanel extends JPanel{
             }  
         };
     };
+
+    public static DownloadPanel getInstace(User user){
+        DownloadPanel.instance.init(user);
+        return instance;
+    }
     
 
 }

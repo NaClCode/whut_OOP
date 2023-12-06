@@ -1,10 +1,10 @@
 package com.whut.GUI;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
-
 import com.whut.DataProcessing;
 import com.whut.model.User;
 
@@ -26,8 +25,9 @@ public class Login extends JFrame{
     private JTextField textUsernamer;
     private JButton button1;
     private JButton button2;
+    private static Login instance = new Login();
 
-    public Login(){
+    private Login(){
         super();
 
         try {
@@ -35,6 +35,10 @@ public class Login extends JFrame{
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             System.out.println("无法设置主题");
         }
+        init();
+    }
+
+    private void init(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         setSize(400,300);
         setLocation(500,200);
@@ -118,8 +122,14 @@ public class Login extends JFrame{
         if(user == null){
             JOptionPane.showMessageDialog(null, "您输入的账号或密码错误", "错误", JOptionPane.ERROR_MESSAGE);
         }else{
-            this.dispose();
-            new MainFrame(user);
+            setVisible(false);
+            textUsernamer.setText("");
+            testPassword.setText("");
+            MainFrame.getInstance(user).setVisible(true);
         }
+    }
+
+    public static Login getInstance(){
+        return instance;
     }
 }

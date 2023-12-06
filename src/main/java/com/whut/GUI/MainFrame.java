@@ -19,27 +19,33 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-import com.whut.GUI.FileGUI.FilePanel;
-import com.whut.GUI.UserGUI.UserPanel;
+import com.whut.GUI.FileGUI.DownloadPanel;
+import com.whut.GUI.FileGUI.UploadPanel;
+import com.whut.GUI.UserGUI.AddUserPanel;
+import com.whut.GUI.UserGUI.DelateUserPanel;
+import com.whut.GUI.UserGUI.ListUserPanel;
+import com.whut.GUI.UserGUI.UpdateUserPanel;
 import com.whut.model.User;
-import com.whut.utils.FilePanelEnum;
-import com.whut.utils.UserPanelEnum;
 
 public class MainFrame extends JFrame {
 
-    JPanel content;
-    JPanel panel;
-    User user;
+    private JPanel content = new JPanel();;
+    private JPanel panel = new JPanel();;
+    private User user;
+    private static MainFrame instance = new MainFrame();
 
-    public MainFrame(User user){
+    public MainFrame(){
         super();
-        this.user = user;
-
+        
         try {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
             System.out.println("无法设置主题");
         }
+    }
+    private void init(User user){
+    
+        this.user = user;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         setSize(300,400);
         setLocation(500,200);
@@ -53,12 +59,10 @@ public class MainFrame extends JFrame {
         setIconImage(icon.getImage());
 
         //内容面板
-        content = new JPanel();
 		content.setBorder(new EmptyBorder(5, 5, 5, 5));
 		content.setLayout(new BorderLayout(0, 0));
 		setContentPane(content);
 
-        panel = new JPanel();
 		content.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 
@@ -102,19 +106,27 @@ public class MainFrame extends JFrame {
         JMenuItem searchUser = new JMenuItem("查询用户");
         addUser.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {adduser();}
+            public void actionPerformed(ActionEvent e) {
+                panelMaker(AddUserPanel.getInstance());
+            }
         });
         updateUser.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {updateuser();}
+            public void actionPerformed(ActionEvent e) {
+                panelMaker(UpdateUserPanel.getInstance(user));
+            }
         });
         deleteUser.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {deleteuser();}
+            public void actionPerformed(ActionEvent e) {
+                panelMaker(DelateUserPanel.getInstance(user));
+            }
         });
         searchUser.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {searchuser();}
+            public void actionPerformed(ActionEvent e) {
+                panelMaker(ListUserPanel.getInstance());
+            }
         });
 
         userMenu.add(addUser);
@@ -124,33 +136,8 @@ public class MainFrame extends JFrame {
         return userMenu;
     }
 
-    private void adduser(){
+    private void panelMaker(JPanel jPanel){
         panel.remove(panel.getComponentAt(0, 0));
-        JPanel jPanel = new UserPanel(user, UserPanelEnum.ADD).getUserPanel();
-        jPanel.setBounds(0, 0, 300, 400);
-        panel.add(jPanel);
-        panel.repaint();
-    }
-
-    private void updateuser(){
-        panel.remove(panel.getComponentAt(0, 0));
-        JPanel jPanel = new UserPanel(user, UserPanelEnum.UPDATE).getUserPanel();
-        jPanel.setBounds(0, 0, 300, 400);
-        panel.add(jPanel);
-        panel.repaint();
-    }
-
-    private void deleteuser(){
-        panel.remove(panel.getComponentAt(0, 0));
-        JPanel jPanel = new UserPanel(user, UserPanelEnum.DELATE).getUserPanel();
-        jPanel.setBounds(0, 0, 300, 400);
-        panel.add(jPanel);
-        panel.repaint();
-    }
-
-    private void searchuser(){
-        panel.remove(panel.getComponentAt(0, 0));
-        JPanel jPanel = new UserPanel(user, UserPanelEnum.LIST).getUserPanel();
         jPanel.setBounds(0, 0, 300, 400);
         panel.add(jPanel);
         panel.repaint();
@@ -161,11 +148,7 @@ public class MainFrame extends JFrame {
         uploadFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panel.remove(panel.getComponentAt(0, 0));
-                JPanel jPanel = new FilePanel(user, FilePanelEnum.UPLOAD).getFilePanel();
-                jPanel.setBounds(0, 0, 300, 400);
-                panel.add(jPanel);
-                panel.repaint();
+               panelMaker(UploadPanel.getInstance(user));
             }
         });
         return uploadFile;
@@ -176,26 +159,23 @@ public class MainFrame extends JFrame {
         downloadFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panel.remove(panel.getComponentAt(0, 0));
-                JPanel jPanel = new FilePanel(user, FilePanelEnum.DOWNLOAD).getFilePanel();
-                jPanel.setBounds(0, 0, 300, 400);
-                panel.add(jPanel);
-                panel.repaint();
+                panelMaker(DownloadPanel.getInstace(user));
             }
         });
         return downloadFile;
     }
 
     private JPanel getMainJPanel(){
-        JPanel mainPanel = new MainPanel(user);
+        JPanel mainPanel = MainPanel.getInstance(user);
         JButton button = new JButton("退出登录");
         button.setBounds(70, 270, 150, 30);
         button.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                new Login();
+                
+                setVisible(false);
+                Login.getInstance().setVisible(true);
             }
             
         });
@@ -203,6 +183,11 @@ public class MainFrame extends JFrame {
         mainPanel.add(button);
         return mainPanel;
 
+    }
+
+    public static MainFrame getInstance(User user){
+        MainFrame.instance.init(user);
+        return instance;
     }
 
 }

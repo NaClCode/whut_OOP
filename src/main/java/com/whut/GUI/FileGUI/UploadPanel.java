@@ -14,27 +14,24 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.whut.DataProcessing;
-import com.whut.model.Doc;
 import com.whut.model.User;
 import com.whut.utils.ImageUtil;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import javax.swing.ProgressMonitorInputStream;
 import javax.swing.JOptionPane;
 
 public class UploadPanel extends JPanel{
 
-    JTextField fileID;
-    JTextField fileDsc;
-    JTextField fileName;
-    String filePath;
-    User user;
+    private JTextField fileID = new JTextField();
+    private JTextField fileDsc = new JTextField();
+    private JTextField fileName = new JTextField();
+    private String filePath;
+    private User user;
+    private static UploadPanel instance = new UploadPanel();
 
-    UploadPanel(User user){
+    private UploadPanel(){
+        super();
+    }
+
+    private void init(User user){
         this.setLayout(null);
         this.user = user;
 
@@ -60,16 +57,13 @@ public class UploadPanel extends JPanel{
         label_2.setFont(new Font("楷体", Font.BOLD, 15));
         this.add(label_2);
 
-        fileID = new JTextField();
         fileID.setBounds(100, 150, 140, 30);
         this.add(fileID);
         fileID.setColumns(10);
 
-        fileDsc = new JTextField();
         fileDsc.setBounds(100, 190, 140, 30);
         this.add(fileDsc);
 
-        fileName = new JTextField();
         fileName.setBounds(100, 230, 105, 30);
         JButton button1 = new JButton("打开");
         URL openFile = getClass().getResource("../Image/file.png");
@@ -132,6 +126,11 @@ public class UploadPanel extends JPanel{
             }
         }     
     };
+
+    public static UploadPanel getInstance(User user){
+        UploadPanel.instance.init(user);
+        return instance;
+    }
 
 
 }

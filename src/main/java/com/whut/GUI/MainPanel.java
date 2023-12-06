@@ -20,7 +20,13 @@ import com.whut.utils.ImageUtil;
 
 public class MainPanel extends JPanel {
     
-    MainPanel(User user) {
+    private static MainPanel instance = new MainPanel();
+    private MainPanel() {
+        super();
+    }
+
+    private void init(User user){
+        removeAll();
         setLayout(null);
         JButton button1 = new JButton();
         URL mainUrl  = getClass().getResource("Image/main.png");
@@ -63,7 +69,7 @@ public class MainPanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                new PasswordDialog(user).setVisible(true);       
+                PasswordDialog.getInstance(user).setVisible(true);      
             }
             
         });
@@ -80,16 +86,27 @@ public class MainPanel extends JPanel {
         setBounds(0, 0, 300, 400);
 
     }
+
+    public static MainPanel getInstance(User user) {
+        MainPanel.instance.init(user);
+        return instance;
+    }
 }
 
 class PasswordDialog extends JDialog implements ActionListener {
-    String ok = "确定";
-    String cancel = "取消";
-    JPasswordField jPasswordField;
-    JPasswordField jPasswordField1;
-    User user;
+    
+    private JPasswordField jPasswordField = new JPasswordField();
+    private JPasswordField jPasswordField1 = new JPasswordField();;
+    private User user;
+    private static PasswordDialog instance = new PasswordDialog();
+    private String ok = "确定";
+    private String cancel = "取消";
 
-    public PasswordDialog(User user) {
+    private PasswordDialog() {
+        super();
+    }
+
+    private void init(User user){
         this.user = user;
         setLayout(null);
         setTitle("修改密码");
@@ -107,12 +124,11 @@ class PasswordDialog extends JDialog implements ActionListener {
         jLabel1.setFont(new Font("楷体", Font.PLAIN, 15));
         jLabel1.setBounds(30, 35, 180, 45);
 
-        jPasswordField = new JPasswordField();
         jPasswordField.setBounds(120, 10, 130, 25);
-        jPasswordField1 = new JPasswordField();
         jPasswordField1.setBounds(120, 45, 130, 25);
-
-
+        jPasswordField.setText("");
+        jPasswordField1.setText("");
+        
         JButton okBut = new JButton(ok);
         JButton cancelBut = new JButton(cancel);
         okBut.setBounds(30, 80, 90, 25);
@@ -155,5 +171,10 @@ class PasswordDialog extends JDialog implements ActionListener {
             this.setVisible(false);
             this.dispose();
         }
+    }
+
+    public static PasswordDialog getInstance(User user){
+        PasswordDialog.instance.init(user);
+        return instance;
     }
 }

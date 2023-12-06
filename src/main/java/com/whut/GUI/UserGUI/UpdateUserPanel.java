@@ -20,16 +20,23 @@ import com.whut.utils.ImageUtil;
 
 public class UpdateUserPanel extends JPanel{
     
-    JTextField passwordField;
-    JComboBox<String> usernameComboBox;
-    ArrayList<User> userList;
-    User user;
-    JComboBox<String> comboBox;
+    private JTextField passwordField;
+    private JComboBox<String> usernameComboBox;
+    private ArrayList<User> userList;
+    private User user;
+    private JComboBox<String> comboBox;
+    private JButton button1;
+    private static UpdateUserPanel instance = new UpdateUserPanel();
 
-    public UpdateUserPanel(User user){
+    private UpdateUserPanel(){
+        super();
+    }
+
+    private void init(User user){
+        removeAll();
+
         this.setLayout(null);
         this.user = user;
-
         URL url  = getClass().getResource("../Image/update.png");
         ImageIcon add = ImageUtil.createAutoAdjustIcon(url, true);
         JLabel pic = new JLabel();;
@@ -52,19 +59,6 @@ public class UpdateUserPanel extends JPanel{
         label_2.setFont(new Font("楷体", Font.BOLD, 15));
         this.add(label_2);
 
-        usernameComboBox = new JComboBox<String>();
-        
-        usernameComboBox.setBounds(100, 150, 140, 30);
-        usernameComboBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                User user = userList.get(usernameComboBox.getSelectedIndex());
-                passwordField.setText(user.getPassword());
-                comboBox.setSelectedItem(user.getRole());
-            }
-        });
-        this.add(usernameComboBox);
-
         passwordField = new JTextField();
         passwordField.setBounds(100, 190, 140, 30);
         this.add(passwordField);
@@ -76,25 +70,50 @@ public class UpdateUserPanel extends JPanel{
         comboBox.setBounds(100, 230, 140, 30); 
         this.add(comboBox);
 
-        //加载用户清单
-        updateUserList();
-    
-
-        JButton button1 = new JButton("修改");
+        button1 = new JButton("更新");
 		button1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
                 if(JOptionPane.showConfirmDialog(null, "是否更新", "更新", JOptionPane.YES_NO_OPTION, JOptionPane.NO_OPTION) == 0){
                     String userName = (String)usernameComboBox.getSelectedItem();
                     String password = passwordField.getText();
                     String role = (String)comboBox.getSelectedItem();
+                    if(userName != null && password != null && role != null){
+                        update(userName, password, role);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "请选择要更新的用户", "错误", JOptionPane.ERROR_MESSAGE);
+                    }
                     
-                    update(userName, password, role);
+                    
                 }
 			}
 		});
         button1.setBounds(100, 280, 80, 30);
         button1.setFont(new Font("楷体",0, 15));
         this.add(button1);
+        
+        usernameComboBox = new JComboBox<String>();
+        //加载用户清单
+        updateUserList();
+        usernameComboBox.setBounds(100, 150, 140, 30);
+        usernameComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int id = usernameComboBox.getSelectedIndex();
+                if(id != -1){
+                    User user = userList.get(id);
+                    passwordField.setText(user.getPassword());
+                    comboBox.setSelectedItem(user.getRole());
+                }else{
+                    passwordField.setText("");
+                    comboBox.setSelectedIndex(-1);
+
+                }
+            }
+        });
+        this.add(usernameComboBox);
+
+
+    
     }
 
     //更新用户清单
@@ -105,9 +124,11 @@ public class UpdateUserPanel extends JPanel{
         for(User i:userList)
             usernameComboBox.addItem(i.getName());
         if(userList.size() > 0){
+            usernameComboBox.setSelectedIndex(0);
             passwordField.setText(userList.get(0).getPassword());
             comboBox.setSelectedItem(userList.get(0).getRole());
         }else{
+            usernameComboBox.setSelectedIndex(-1);
             passwordField.setText("");
             comboBox.setSelectedIndex(0);
         }
@@ -126,6 +147,11 @@ public class UpdateUserPanel extends JPanel{
                 JOptionPane.showMessageDialog(null, "修改错误", "错误", JOptionPane.ERROR_MESSAGE);
         }
            
+    }
+
+    public static UpdateUserPanel getInstance(User user){
+        UpdateUserPanel.instance.init(user);
+        return instance;
     }
     
 

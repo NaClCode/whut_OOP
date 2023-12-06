@@ -20,13 +20,19 @@ import com.whut.model.User;
 import com.whut.utils.ImageUtil;
 
 public class DelateUserPanel extends JPanel{
-    JComboBox<String> usernameComboBox;
-    ArrayList<User> userList;
-    JLabel passwordLabel;
-    JLabel roleLabel;
-    User user;
+    private JComboBox<String> usernameComboBox;
+    private ArrayList<User> userList;
+    private JLabel passwordLabel;
+    private JLabel roleLabel;
+    private User user;
+    private static DelateUserPanel instance = new DelateUserPanel();
 
-    public DelateUserPanel(User user){
+    private DelateUserPanel(){
+        super();
+    }
+
+    private void init(User user){
+        removeAll();
         this.setLayout(null);
         this.user = user;
 
@@ -76,7 +82,12 @@ public class DelateUserPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
                 if(JOptionPane.showConfirmDialog(null, "是否删除", "删除", JOptionPane.YES_NO_OPTION, JOptionPane.NO_OPTION) == 0){
                     String userName = (String)usernameComboBox.getSelectedItem();
-                    delete(userName);
+                    if(userName != null){
+                        delete(userName);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "请选择要删除的用户", "错误", JOptionPane.ERROR_MESSAGE);
+                    }
+                    
                 }
 			}
 		});
@@ -111,5 +122,10 @@ public class DelateUserPanel extends JPanel{
                 JOptionPane.showMessageDialog(null, "修改成功", "成功", JOptionPane.INFORMATION_MESSAGE);
             }else JOptionPane.showMessageDialog(null, "修改错误", "错误", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public static DelateUserPanel getInstance(User user){
+        DelateUserPanel.instance.init(user);
+        return instance;
     }
 }

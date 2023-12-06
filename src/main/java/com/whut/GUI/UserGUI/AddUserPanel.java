@@ -18,10 +18,15 @@ import com.whut.DataProcessing;
 import com.whut.utils.ImageUtil;
 
 public class AddUserPanel extends JPanel{
-    JTextField usernameField;
-    JPasswordField passwordField;
+    JTextField usernameField = new JTextField();;
+    JPasswordField passwordField = new JPasswordField();
+    private static AddUserPanel instance = new AddUserPanel();
 
-    public AddUserPanel(){
+    private AddUserPanel(){
+        super();
+    }
+
+    private void init(){
         this.setLayout(null);
 
         URL url  = getClass().getResource("../Image/add.png");
@@ -46,12 +51,10 @@ public class AddUserPanel extends JPanel{
         label_2.setFont(new Font("楷体", Font.BOLD, 15));
         this.add(label_2);
 
-        usernameField = new JTextField();
         usernameField.setBounds(100, 150, 140, 30);
         this.add(usernameField);
         usernameField.setColumns(10);
 
-        passwordField = new JPasswordField();
         passwordField.setBounds(100, 190, 140, 30);
         this.add(passwordField);
 
@@ -70,6 +73,9 @@ public class AddUserPanel extends JPanel{
                     String password = new String(passwordField.getPassword());
                     String role = (String) comboBox.getSelectedItem();
                     add(name, password, role);
+                    usernameField.setText("");
+                    passwordField.setText("");
+                    comboBox.setSelectedIndex(-1);
                 }
 			}
 		});
@@ -90,5 +96,10 @@ public class AddUserPanel extends JPanel{
             }
         } 
         
+    }
+
+    public static AddUserPanel getInstance(){
+        AddUserPanel.instance.init();
+        return instance;
     }
 }

@@ -10,11 +10,17 @@ import com.whut.DataProcessing;
 import com.whut.model.User;
 
 public class ListUserPanel extends JPanel{
-    JTable table;
-    JScrollPane scrollPane;
-    ArrayList<User> userList;
-    public ListUserPanel(){
+    private JTable table;
+    private JScrollPane scrollPane;
+    private ArrayList<User> userList;
+    private static ListUserPanel instance = new ListUserPanel();
 
+    private ListUserPanel(){
+        super();
+    }
+
+    private void init(){
+        removeAll();
         this.setLayout(null);
         String[] columnNames = {"用户名", "密码", "角色"};
         userList = DataProcessing.getAllUsers();
@@ -33,6 +39,11 @@ public class ListUserPanel extends JPanel{
         scrollPane.setBounds(10, 10, 260, 300);
         this.add(scrollPane);
         
+    }
+
+    public static ListUserPanel getInstance(){
+        ListUserPanel.instance.init();
+        return instance;
     }
 }
 
