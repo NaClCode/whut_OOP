@@ -10,11 +10,7 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
-<<<<<<< HEAD
 import com.whut.client.GUI.utils.ProgressMonitorStream;
-=======
-import com.whut.client.GUI.ProgressMonitorStream;
->>>>>>> origin
 import com.whut.client.common.ClientMsg;
 import com.whut.client.utils.Config;
 

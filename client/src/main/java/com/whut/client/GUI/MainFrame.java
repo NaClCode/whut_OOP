@@ -19,7 +19,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
-<<<<<<< HEAD
 import com.whut.client.GUI.Panel.MainPanel;
 import com.whut.client.GUI.Panel.FileGUI.DownloadCount;
 import com.whut.client.GUI.Panel.FileGUI.DownloadPanel;
@@ -28,14 +27,6 @@ import com.whut.client.GUI.Panel.UserGUI.AddUserPanel;
 import com.whut.client.GUI.Panel.UserGUI.DelateUserPanel;
 import com.whut.client.GUI.Panel.UserGUI.ListUserPanel;
 import com.whut.client.GUI.Panel.UserGUI.UpdateUserPanel;
-=======
-import com.whut.client.GUI.FileGUI.DownloadPanel;
-import com.whut.client.GUI.FileGUI.UploadPanel;
-import com.whut.client.GUI.UserGUI.AddUserPanel;
-import com.whut.client.GUI.UserGUI.DelateUserPanel;
-import com.whut.client.GUI.UserGUI.ListUserPanel;
-import com.whut.client.GUI.UserGUI.UpdateUserPanel;
->>>>>>> origin
 import com.whut.client.model.User;
 import com.whut.client.service.DataProcessing;
 

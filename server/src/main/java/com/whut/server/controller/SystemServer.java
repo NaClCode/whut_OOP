@@ -9,10 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin
 @Slf4j
 public class SystemServer {
     
@@ -33,10 +29,6 @@ public class SystemServer {
             }
         }catch(IOException e){
             log.error("错误" + e.getMessage());
-<<<<<<< HEAD
-
-=======
->>>>>>> origin
         }
     }
 }

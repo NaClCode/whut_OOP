@@ -1,9 +1,4 @@
-<<<<<<<< HEAD:client/src/main/java/com/whut/client/GUI/Panel/UserGUI/DelateUserPanel.java
 package com.whut.client.GUI.Panel.UserGUI;
-========
-package com.whut.client.GUI.UserGUI;
->>>>>>>> origin:client/src/main/java/com/whut/client/GUI/UserGUI/DelateUserPanel.java
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -19,10 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-<<<<<<<< HEAD:client/src/main/java/com/whut/client/GUI/Panel/UserGUI/DelateUserPanel.java
 import com.whut.client.GUI.MainFrame;
-========
->>>>>>>> origin:client/src/main/java/com/whut/client/GUI/UserGUI/DelateUserPanel.java
 import com.whut.client.model.User;
 import com.whut.client.service.DataProcessing;
 import com.whut.client.utils.ImageUtil;

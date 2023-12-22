@@ -1,9 +1,4 @@
-<<<<<<<< HEAD:client/src/main/java/com/whut/client/GUI/Panel/UserGUI/UpdateUserPanel.java
 package com.whut.client.GUI.Panel.UserGUI;
-========
-package com.whut.client.GUI.UserGUI;
->>>>>>>> origin:client/src/main/java/com/whut/client/GUI/UserGUI/UpdateUserPanel.java
-
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,11 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-<<<<<<<< HEAD:client/src/main/java/com/whut/client/GUI/Panel/UserGUI/UpdateUserPanel.java
 import com.whut.client.GUI.MainFrame;
-========
->>>>>>>> origin:client/src/main/java/com/whut/client/GUI/UserGUI/UpdateUserPanel.java
 import com.whut.client.model.User;
 import com.whut.client.service.DataProcessing;
 import com.whut.client.utils.ImageUtil;

@@ -10,10 +10,7 @@ import java.util.function.Consumer;
 import com.whut.server.common.ClientMsg;
 import com.whut.server.common.ServerMsg;
 import com.whut.server.service.DataProcessing;
-<<<<<<< HEAD
 import com.whut.server.utils.Email;
-=======
->>>>>>> origin
 
 import java.io.ObjectOutputStream;
 import java.io.File;
@@ -31,10 +28,7 @@ public class ServerThread extends Thread{
     private ObjectInputStream in;
     private boolean exit;
     private ConcurrentHashMap<String, Consumer<String[]>> actionMappings = new ConcurrentHashMap<>();
-<<<<<<< HEAD
     private Email email = new Email();
-=======
->>>>>>> origin
 
     
     public ServerThread(Socket socket) {
@@ -58,14 +52,10 @@ public class ServerThread extends Thread{
                         (String[] args) -> {exit(args);});
         actionMappings.put(ClientMsg.INSERT_DOC, 
                         (String[] args) -> {sendSuccessMsg(DataProcessing.insertDoc(args[0], args[1], args[2], args[3], args[4], args[5]));});
-<<<<<<< HEAD
         actionMappings.put(ClientMsg.SEND_CODE, 
                         (String[] args) -> {sendSuccessMsg(email.sendEmail(args[0]));});
         actionMappings.put(ClientMsg.VERIFY_CODE, 
                         (String[] args) -> {sendSuccessMsg(email.verifyCode(args[0], args[1]));});
-=======
-
->>>>>>> origin
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
@@ -92,76 +82,16 @@ public class ServerThread extends Thread{
     }
 
     @Override
-<<<<<<< HEAD
     
-=======
-    @SuppressWarnings("unchecked")
->>>>>>> origin
     public void run() {
         try {
             exit = false;
 
             int mod = in.read();
-<<<<<<< HEAD
             switch(mod){
                 case ClientMsg.DATABASES: database(); break;
                 case ClientMsg.UPLOAD: upload(); break;
                 case ClientMsg.DOWNLOAD: download(); break;
-=======
-            log.info(String.valueOf(mod));
-            if(mod == ClientMsg.DATABASES){
-                log.info("数据库");
-                do{ 
-                    if(in.markSupported()) in.reset();
-                    HashMap<String, Object> msg = (HashMap<String, Object>) in.readObject();
-                    String type = (String) msg.get("Type");
-                    String[] args = (String[]) msg.get("Data");
-                    actionMappings.get(type).accept(args);
-                        
-                }while(!exit);
-                log.info("退出");
-            }else if(mod == ClientMsg.UPLOAD){
-                log.info("上传");
-                 try {
-                    String uploadFileName = (String) in.readObject();
-                    String filePath = DataProcessing.config.get("server_filepath") + "//" + uploadFileName;
-
-                    File file = new File(filePath);
-                    byte[] bytes = new byte[1024];
-                    FileOutputStream outputStream = new FileOutputStream(file);
-                    while(in.read(bytes, 0, 1024) != -1){
-                        outputStream.write(bytes, 0, 1024);
-                    }
-                    in.close();
-                    outputStream.close();
-                    log.info("上传成功");
-                } catch (IOException e) {
-                    log.error("上传失败", e);
-                } 
-            }else if(mod == ClientMsg.DOWNLOAD){
-                log.info("下载");
-                try {
-                    String downloadFileName = (String) in.readObject();
-                    String filePath = DataProcessing.config.get("server_filepath") + "//" + downloadFileName;
-                    log.info(downloadFileName);
-
-                    File file = new File(filePath);
-                    byte[] bytes = new byte[1024];
-                    FileInputStream inputStream = new FileInputStream(file);
-                    
-                    out.writeObject(inputStream.available());
-
-                    while(inputStream.read(bytes, 0, 1024) != -1){
-                        out.write(bytes, 0, 1024);
-                    }
-                    in.close();
-                    out.close();
-                    inputStream.close();
-                    log.info("下载成功");
-                } catch (Exception e) {
-                    log.error("下载失败", e);
-                }
->>>>>>> origin
             }
             this.interrupt();
 
@@ -182,7 +112,6 @@ public class ServerThread extends Thread{
         }     
     }
 
-<<<<<<< HEAD
     @SuppressWarnings("unchecked")
     private void database(){
         try{
@@ -246,6 +175,4 @@ public class ServerThread extends Thread{
         }
     }
 
-=======
->>>>>>> origin
 }

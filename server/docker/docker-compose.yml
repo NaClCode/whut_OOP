@@ -6,22 +6,14 @@ services:
     # 容器名(以后的控制都通过这个)
     container_name: mysql
     # 重启策略
-<<<<<<< HEAD
     #restart: always
-=======
-    restart: always
->>>>>>> origin
     environment:
       # 时区上海
       TZ: Asia/Shanghai
       # root 密码
       MYSQL_ROOT_PASSWORD: qwert12345
       # 初始化数据库(后续的初始化sql会在这个库执行)
-<<<<<<< HEAD
       MYSQL_DATABASE: db_oop
-=======
-      MYSQL_DATABASv vdxE: db_oop
->>>>>>> origin
       # 初始化用户(不能是root 会报错, 后续需要给新用户赋予权限)
       MYSQL_USER: mysql
       # 用户密码
@@ -63,11 +55,7 @@ services:
       - TZ="Asia/Shanghai"
     #启动容器后执行的命令
     working_dir: /java
-<<<<<<< HEAD
     entrypoint: java -jar server.jar config.properties
-=======
-    entrypoint: java -jar server.jar
->>>>>>> origin
     depends_on:
       - mysql
     networks:

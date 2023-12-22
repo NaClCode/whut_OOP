@@ -5,13 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import com.whut.server.utils.Config;
-<<<<<<< HEAD
 import lombok.extern.slf4j.Slf4j;
-=======
-
-import lombok.extern.slf4j.Slf4j;
-
->>>>>>> origin
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -66,12 +60,7 @@ public class DataProcessing{
 			//disconnectDB();
 			log.info(">> 数据库连接成功");
 		} catch (SQLException e) {
-<<<<<<< HEAD
 			log.error(">> 数据库连接失败", e);
-=======
-			log.error(">> 数据库连接失败");
-			System.exit(0);
->>>>>>> origin
 		}
 	}
 
@@ -191,10 +180,7 @@ public class DataProcessing{
 				String description = resultSet.getString("file_description");
 				String uploadFileName = resultSet.getString("uploadFileName");
 				String[] doc = {ID, creator, description, name, String.valueOf(timestamp), uploadFileName};
-<<<<<<< HEAD
 				updateDocDownloadCount(ID);
-=======
->>>>>>> origin
 				return doc;
 			}
 			return null;
@@ -205,7 +191,6 @@ public class DataProcessing{
 		
 	}
 
-<<<<<<< HEAD
 	public static boolean updateDocDownloadCount(String ID){
 		try {
 			String updateDocDownloadCountSql = "update doc set downloadCount = downloadCount + 1 where ID = ?";
@@ -221,8 +206,6 @@ public class DataProcessing{
 	}
 
 
-=======
->>>>>>> origin
 	public static String[][] getAllDocs(){
 		try {
 			String sql = "select * from doc";
@@ -230,11 +213,7 @@ public class DataProcessing{
 
 			resultSet = preparedStatement.executeQuery();
 			int num = getResultSetSize();
-<<<<<<< HEAD
 			String[][] docs = new String[num][7];
-=======
-			String[][] docs = new String[num][6];
->>>>>>> origin
 			int i = 0;
 			while(resultSet.next()){
 				String ID = resultSet.getString("ID");
@@ -243,34 +222,22 @@ public class DataProcessing{
 				String name = resultSet.getString("file_name");
 				String description = resultSet.getString("file_description");
 				String uploadFileName = resultSet.getString("uploadFileName");
-<<<<<<< HEAD
 				int downloadCount = resultSet.getInt("downloadCount");
-=======
->>>>>>> origin
 				docs[i][0] = ID;
 				docs[i][1] = creator;
 				docs[i][2] = description;
 				docs[i][3] = name;
 				docs[i][4] = String.valueOf(timestamp);
 				docs[i][5] = uploadFileName;
-<<<<<<< HEAD
 				docs[i][6] = String.valueOf(downloadCount);
-=======
->>>>>>> origin
 				i ++ ;
 				
 			}
 			return docs;
 		} catch (SQLException e) {
 			log.error("getAllDocs Error:" + e.getMessage());
-<<<<<<< HEAD
 			return new String[0][7];
-=======
-			return new String[0][3];
->>>>>>> origin
 		}
-		
-
 	}
 
 	public static boolean insertDoc(String ID, String creator, String description, String name, String time, String uploadFileName){

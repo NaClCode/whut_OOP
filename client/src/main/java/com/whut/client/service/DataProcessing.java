@@ -176,13 +176,8 @@ public class DataProcessing{
 		String[][] docs = (String[][])writeAndRead(ClientMsg.GET_ALL_DOC, new String[0]);
 		Vector<Doc> docVector = new Vector<Doc>();
 		for(String[] doc : docs){
-<<<<<<< HEAD
 			if(doc.length == 7){
 				docVector.add(new Doc(doc[0], doc[1], doc[2], doc[3], Long.parseLong(doc[4]), doc[5], Integer.parseInt(doc[6])));
-=======
-			if(doc.length == 6){
-				docVector.add(new Doc(doc[0], doc[1], doc[2], doc[3], Long.parseLong(doc[4]), doc[5]));
->>>>>>> origin
 			}
 		}
 		return docVector;
@@ -195,7 +190,6 @@ public class DataProcessing{
 		return (Boolean)writeAndRead(ClientMsg.INSERT_DOC, args);
 	}
 
-<<<<<<< HEAD
 	public static boolean sendCode(String email) throws Exception {
 		return (Boolean)writeAndRead(ClientMsg.SEND_CODE, new String[]{email});
 	}
@@ -203,9 +197,5 @@ public class DataProcessing{
 	public static boolean verifyCode(String email, String code) throws Exception{
 		return (Boolean)writeAndRead(ClientMsg.VERIFY_CODE, new String[]{email, code});
 	}
-=======
-
-
->>>>>>> origin
 
 }

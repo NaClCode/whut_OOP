@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:client/src/main/java/com/whut/client/GUI/Panel/FileGUI/UploadPanel.java
-package com.whut.client.GUI.Panel.FileGUI;
-========
 package com.whut.client.GUI.FileGUI;
->>>>>>>> origin:client/src/main/java/com/whut/client/GUI/FileGUI/UploadPanel.java
 
 import java.awt.FileDialog;
 import java.awt.Font;
@@ -17,10 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-<<<<<<<< HEAD:client/src/main/java/com/whut/client/GUI/Panel/FileGUI/UploadPanel.java
 import com.whut.client.GUI.MainFrame;
-========
->>>>>>>> origin:client/src/main/java/com/whut/client/GUI/FileGUI/UploadPanel.java
 import com.whut.client.model.User;
 import com.whut.client.utils.ImageUtil;
 

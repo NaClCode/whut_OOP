@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:client/src/main/java/com/whut/client/GUI/Panel/MainPanel.java
 package com.whut.client.GUI.Panel;
-========
-package com.whut.client.GUI;
->>>>>>>> origin:client/src/main/java/com/whut/client/GUI/MainPanel.java
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,11 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-
-<<<<<<<< HEAD:client/src/main/java/com/whut/client/GUI/Panel/MainPanel.java
 import com.whut.client.GUI.MainFrame;
-========
->>>>>>>> origin:client/src/main/java/com/whut/client/GUI/MainPanel.java
 import com.whut.client.model.User;
 import com.whut.client.utils.ImageUtil;
 

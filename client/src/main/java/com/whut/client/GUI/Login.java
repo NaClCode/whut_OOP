@@ -143,7 +143,6 @@ public class Login extends JFrame{
         String password = new String(testPassword.getPassword());
         if(username.equals("") || password.equals(""))
             JOptionPane.showMessageDialog(null, "您输入的账号或密码为空", "错误", JOptionPane.ERROR_MESSAGE);
-<<<<<<< HEAD
         else{
             try {
             User user = DataProcessing.searchUser(username, password);
@@ -159,21 +158,6 @@ public class Login extends JFrame{
                 log.error("错误", e);
                 JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
             }
-=======
-        try {
-            User user = DataProcessing.searchUser(username, password);
-            if(user == null){
-                JOptionPane.showMessageDialog(null, "您输入的账号或密码错误", "错误", JOptionPane.ERROR_MESSAGE);
-            }else{
-                setVisible(false);
-                textUsernamer.setText("");
-                testPassword.setText("");
-                MainFrame.getInstance(user).setVisible(true);
-            }
-        } catch (Exception e) {
-            log.error("错误", e);
-            JOptionPane.showMessageDialog(null, e.getMessage(), "错误", JOptionPane.ERROR_MESSAGE);
->>>>>>> origin
         }
         
     }
