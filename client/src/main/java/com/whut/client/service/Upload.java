@@ -53,8 +53,10 @@ public class Upload extends Thread{
             out.flush();
             log.info("上传文件名：" + fileName);
             byte[] bytes = new byte[1024];
-            while(stream.setProgress(in.read(bytes, 0, 1024)) != -1){
-                out.write(bytes, 0, 1024);
+            int len;
+            while((len = stream.setProgress(in.read(bytes))) != -1){
+                out.write(bytes, 0, len);
+                out.flush();
             }
 
             log.info("上传成功");

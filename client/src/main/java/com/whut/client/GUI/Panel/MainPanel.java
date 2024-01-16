@@ -36,7 +36,7 @@ public class MainPanel extends JPanel {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "by NaCl", "欢迎使用档案管理系统", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Author: JinChengGong\nEmail:    naclcode@qq.com\nVersion: 6\n面向对象实验程序，有问题请通过邮箱反馈。", "欢迎使用档案管理系统", JOptionPane.INFORMATION_MESSAGE);
             }
         });
        

@@ -55,8 +55,10 @@ public class Download extends Thread{
             progressMonitorStream.getProgressMonitor().setMillisToDecideToPopup(0);
 
             byte[] bytes = new byte[1024];
-            while(progressMonitorStream.setProgress(in.read(bytes, 0, 1024)) != -1){
-                outFile.write(bytes, 0, 1024);
+            int len;
+            while((len = progressMonitorStream.setProgress(in.read(bytes))) != -1){
+                outFile.write(bytes, 0, len);
+                outFile.flush();
             }
 
             log.info("下载成功");

@@ -103,7 +103,7 @@ public class ServerThread extends Thread{
     private void exit(String[] data){
         exit = true; 
         try {
-            sendMsg(ServerMsg.EXIT, null);
+            sendMsg(ServerMsg.SUCCESS, ServerMsg.EXIT);
             in.close();
             out.close();
             socket.close();
@@ -137,13 +137,19 @@ public class ServerThread extends Thread{
             String filePath = DataProcessing.config.get("server_filepath") + "//" + uploadFileName;
 
             File file = new File(filePath);
-            byte[] bytes = new byte[1024];
-            FileOutputStream outputStream = new FileOutputStream(file);
-            while(in.read(bytes, 0, 1024) != -1){
-                outputStream.write(bytes, 0, 1024);
+            System.out.println(file);
+            if(file.createNewFile()){
+                byte[] bytes = new byte[1024];
+                FileOutputStream outputStream = new FileOutputStream(file);
+                int len;
+                while((len = in.read(bytes)) != -1){
+                    outputStream.write(bytes, 0, len);
+                    outputStream.flush();
+                }
+                in.close();
+                outputStream.close();
             }
-            in.close();
-            outputStream.close();
+            
             log.info("上传成功");
         } catch (IOException | ClassNotFoundException e) {
             log.error("上传失败", e);
@@ -162,9 +168,11 @@ public class ServerThread extends Thread{
             FileInputStream inputStream = new FileInputStream(file);
                     
             out.writeObject(inputStream.available());
-
-            while(inputStream.read(bytes, 0, 1024) != -1){
-                out.write(bytes, 0, 1024);
+            out.flush();
+            int len;
+            while((len = inputStream.read(bytes)) != -1){
+                out.write(bytes, 0, len);
+                out.flush();
             }
             in.close();
             out.close();

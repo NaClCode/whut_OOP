@@ -48,10 +48,15 @@ public class Login extends JFrame{
 
     private void init(){
         
-        if(!DataProcessing.connectServer()){
-            JOptionPane.showMessageDialog(null, "无法连接服务器", "错误", JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
+        while(!DataProcessing.connectServer()){
+            if(JOptionPane.showConfirmDialog(null, "无法连接服务器，是否重试", "错误", JOptionPane.YES_NO_OPTION, JOptionPane.NO_OPTION) == 0){
+                log.info("重新连接");
+            }else{
+                System.exit(0);
+            }
         }
+
+        
         addWindowListener(new WindowAdapter() {
 
             @Override

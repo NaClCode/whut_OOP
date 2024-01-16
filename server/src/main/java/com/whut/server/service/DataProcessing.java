@@ -55,9 +55,7 @@ public class DataProcessing{
 			jdbcUrl = config.get("jdbc_url");
 			jdbcUser = config.get("jdbc_username");
 			jdbcPassword = config.get("jdbc_password");
-			
-			connectDB("select * from user");
-			//disconnectDB();
+			connectDB("show databases;");
 			log.info(">> 数据库连接成功");
 		} catch (SQLException e) {
 			log.error(">> 数据库连接失败", e);
